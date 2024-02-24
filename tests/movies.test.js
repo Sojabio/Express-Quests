@@ -1,5 +1,5 @@
 const request = require("supertest");
-
+const database = require("../database")
 const app = require("../src/app");
 
 describe("GET /api/movies", () => {
@@ -27,3 +27,5 @@ describe("GET /api/movies/:id", () => {
     expect(response.status).toEqual(404);
   });
 });
+
+afterAll(() => database.end());
