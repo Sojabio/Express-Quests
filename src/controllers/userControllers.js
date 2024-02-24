@@ -28,6 +28,28 @@ const getUserById = (req, res) => {
     });
 };
 
+const updateUser = (req, res) => {
+  const id = parseInt(req.params.id);
+  const { firstname, lastname, email, city, language } = req.body;
+  database
+    .query(
+      "UPDATE users SET firstname = ?, lastname = ?, email = ?, city = ?, language = ? WHERE id = ?",
+      [firstname, lastname, email, city, language, id]
+    )
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.sendStatus(404);
+      } else {
+        res.status(200).json({});
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
+
+
 const postUser = (req, res) => {
   const { firstname, lastname, email, city, language } = req.body;
   database
@@ -47,5 +69,6 @@ const postUser = (req, res) => {
 module.exports = {
   getUsers,
   getUserById,
-  postUser
+  postUser,
+  updateUser
 };

@@ -28,6 +28,28 @@ const getMovieById = (req, res) => {
     });
 };
 
+const updateMovie = (req, res) => {
+  const id = parseInt(req.params.id);
+  const { title, director, year, color, duration } = req.body;
+  database
+    .query(
+      "UPDATE movies SET title = ?, director = ?, year = ?, color = ?, duration = ? WHERE id = ?",
+      [title, director, year, color, duration, id]
+    )
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.sendStatus(404);
+      } else {
+        res.status(200).json({}); 
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
+
+
 const postMovie = (req, res) => {
   const { title, director, year, color, duration } = req.body;
   database
@@ -48,5 +70,6 @@ const postMovie = (req, res) => {
 module.exports = {
   getMovies,
   getMovieById,
-  postMovie
+  postMovie,
+  updateMovie
 };
